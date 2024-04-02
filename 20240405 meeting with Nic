@@ -1,0 +1,38 @@
+# 20240327 Project
+
+***Would you be available next week for a project/technical interview? The structure of these is:***
+
+- ***Share a past project (git repo, etc.) 48+ hours in advance of the interview***
+- ***Join a 60 mn call where you talk me through the context of the project, and make a small extension on the code base. Most candidates come with an extension planned, I find this helps ensure we use the time well.***
+
+***If possible, can you share a project where data visualization was an important component? This role would involve working in tools like Tableau/QuickSite and scripting in SQL and Python.***
+############
+import sqlite3
+import pandas as pd
+
+# 1. Read the CSV file
+file_path = '/Users/Apple/Downloads/OGDSurvey.csv'  # Adjust to your file path
+data = pd.read_csv(file_path, encoding='Big5')
+
+# 2. Establish a connection to the SQLite database
+conn = sqlite3.connect(':memory:')  # Use an in-memory database
+
+# 3. Use the DataFrame's to_sql method to directly insert the data into the SQLite database
+data.to_sql('survey_data', conn, if_exists='replace', index=False)
+
+# 4. Use pandas to query the database
+query = "SELECT * FROM survey_data"
+df = pd.read_sql_query(query, conn)
+
+# 5. Save the query results to a CSV
+save_path = '/Users/Apple/Desktop/my_dataframe.csv'  # Adjust to the actual save path
+df.to_csv(save_path, index=False, encoding='utf_8_sig')
+
+print(f'Query results have been saved to: {save_path}')
+
+# 6. Close the database connection
+conn.close()
+
+#######
+
+
